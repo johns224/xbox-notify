@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.Date;
 
 @RestController
-public class XboxNotifcationController {
+public class XboxNotifcationController extends NotifcationController {
 	public static final String MESSAGES_URL = "https://xboxapi.com/v2/messages";
 
 	@Value("${xbox.user.xuid}")
@@ -53,10 +52,6 @@ public class XboxNotifcationController {
 				response.close();
 		}
 		return responseString;
-	}
-
-	static void log(String message) {
-		System.out.println(String.format("[%s] %s", new Date(), message));
 	}
 
 
