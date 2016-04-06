@@ -28,7 +28,7 @@ public class GrowlNotificationController extends NotifcationController {
     @Value("${growl.password}")
     private String growlPassword;
 
-    private GntpClient client;
+    GntpClient client;
     private GntpNotificationInfo notificationInfo;
 
     @RequestMapping("/growl-notify")
@@ -46,13 +46,13 @@ public class GrowlNotificationController extends NotifcationController {
         return "Sent " + message;
     }
 
-    private void sendNotification(String title, String message) {
+    void sendNotification(String title, String message) {
         client.notify(Gntp.notification(notificationInfo, title)
                 .text(message)
                 .build());
     }
 
-    private void init(String ipAddress, int port, String password) {
+    void init(String ipAddress, int port, String password) {
         GntpApplicationInfo appInfo = Gntp.appInfo("Mac").build();
         notificationInfo = Gntp.notificationInfo(appInfo, "growl-notifier").build();
         log("Registering with Growl on " + ipAddress + ":" + port);
@@ -64,10 +64,4 @@ public class GrowlNotificationController extends NotifcationController {
         client.register();
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        GrowlNotificationController c = new GrowlNotificationController();
-        c.init("192.168.1.26", 23053, "");
-        c.sendNotification("Test", "Ross is cool");
-        c.client.shutdown(3L, TimeUnit.SECONDS);
-    }
 }
