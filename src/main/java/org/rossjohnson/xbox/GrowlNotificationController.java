@@ -36,7 +36,7 @@ public class GrowlNotificationController extends NotifcationController {
                         @RequestParam(value = "message", defaultValue = "Hello World") String title)
             throws IOException, InterruptedException {
 
-        if (client != null && client.isRegistered()) {
+        if (client == null || !client.isRegistered()) {
             init(growlIPAddress, Integer.parseInt(growlPort), growlPassword);
             client.waitRegistration(1L, TimeUnit.SECONDS);
         }
