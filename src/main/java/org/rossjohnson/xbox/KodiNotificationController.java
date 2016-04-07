@@ -58,7 +58,7 @@ public class KodiNotificationController extends NotifcationController {
         catch (IOException e) {
             log("Error sending Kodi notification to " + url + ":\n" + e.getMessage());
             e.printStackTrace();
-            return e.getMessage();
+            return "Error sending Kodi notification to " + url + "<p/>" + e.getMessage();
         }
     }
 
