@@ -51,7 +51,7 @@ public class KodiNotificationController extends NotifcationController {
             conn.setRequestMethod("GET");
             int statusCode = conn.getResponseCode();
             if (statusCode != HttpURLConnection.HTTP_OK) {
-				return "Method failed with response code " + statusCode + ":\n" + conn.getResponseMessage();
+				return "Attempt to send message to " + url + " failed with response code " + statusCode + ":\n" + conn.getResponseMessage();
 			}
             return conn.getResponseMessage();
         }

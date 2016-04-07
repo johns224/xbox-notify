@@ -3,7 +3,6 @@ package org.rossjohnson.xbox;
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
@@ -20,17 +19,14 @@ public class Application {
 
     @Bean
     public EmbeddedServletContainerCustomizer configureTomcat() {
-        return new EmbeddedServletContainerCustomizer() {
-            @Override
-            public void customize(ConfigurableEmbeddedServletContainer container) {
-                TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
-                tomcat.setPort(TOMCAT_PORT);
+        return container -> {
+			TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
+			tomcat.setPort(TOMCAT_PORT);
 
-                Connector ajpConnector = new Connector("AJP/1.3");
-                ajpConnector.setPort(AJP_PORT);
-                tomcat.addAdditionalTomcatConnectors(ajpConnector);
-            }
-        };
+			Connector ajpConnector = new Connector("AJP/1.3");
+			ajpConnector.setPort(AJP_PORT);
+			tomcat.addAdditionalTomcatConnectors(ajpConnector);
+		};
     }
 
 }
