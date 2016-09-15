@@ -32,8 +32,8 @@ public class GrowlNotificationController extends NotifcationController {
     private GntpNotificationInfo notificationInfo;
 
     @RequestMapping("/growl-notify")
-    public String index(@RequestParam(value = "title", defaultValue = "Title") String message,
-                        @RequestParam(value = "message", defaultValue = "Hello World") String title)
+    public String index(@RequestParam(value = "title", defaultValue = "Title") String title,
+                        @RequestParam(value = "message", defaultValue = "Hello World") String message)
             throws IOException, InterruptedException {
 
         if (client == null || !client.isRegistered()) {

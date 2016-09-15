@@ -19,8 +19,8 @@ public class Application {
 
     @Bean
     public EmbeddedServletContainerCustomizer configureTomcat() {
-        return container -> {
-			TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
+        return c -> {
+			TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) c;
 			tomcat.setPort(TOMCAT_PORT);
 
 			Connector ajpConnector = new Connector("AJP/1.3");
