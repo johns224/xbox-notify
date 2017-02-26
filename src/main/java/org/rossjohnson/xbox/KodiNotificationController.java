@@ -24,8 +24,8 @@ public class KodiNotificationController extends NotifcationController {
     private String urlMapFromConfig;
 
     @RequestMapping("/kodi-notify")
-    public String index(@RequestParam(value = "title", defaultValue = "Title") String message,
-                        @RequestParam(value = "message", defaultValue = "Hello World") String title,
+    public String index(@RequestParam(value = "title", defaultValue = "Title") String title,
+                        @RequestParam(value = "message", defaultValue = "Hello World") String message,
                         @RequestParam(value = "location", defaultValue = "theater") String location)
             throws IOException, InterruptedException {
 

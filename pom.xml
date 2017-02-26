@@ -5,7 +5,7 @@
 
     <groupId>org.rossjohnson</groupId>
     <artifactId>xbox-notify</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -64,6 +64,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.rossjohnson.xbox.Application</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
