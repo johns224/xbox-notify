@@ -1,11 +1,9 @@
 package org.rossjohnson.vera;
 
 
-import org.rossjohnson.http.HttpClient;
+import org.rossjohnson.http.SimpleHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 public class ArcadeControllerImpl implements ArcadeController {
 
@@ -15,12 +13,12 @@ public class ArcadeControllerImpl implements ArcadeController {
 			"http://%s:3480/data_request?id=action&DeviceNum=%s&serviceId=urn:upnp-org:serviceId:SwitchPower1&action=SetTarget&newTargetValue=";
 
     private static Logger log = LoggerFactory.getLogger(ArcadeControllerImpl.class);
-	private final HttpClient httpClient;
+	private final SimpleHttpClient httpClient;
 	private String statusUrl;
 	private String baseToggleUrl;
 
 	public ArcadeControllerImpl(String veraIPAddress, String arcadeDeviceId) {
-		httpClient = new HttpClient();
+		httpClient = new SimpleHttpClient();
 		statusUrl = String.format(STATUS_URL, veraIPAddress, arcadeDeviceId);
 		baseToggleUrl = String.format(TOGGLE_BASE_URL, veraIPAddress, arcadeDeviceId);
 	}
