@@ -57,11 +57,4 @@ public class ArcadeControllerImpl implements ArcadeController {
 		log("Arcade on? " + ac.isArcadePowerOn());
 	}
 
-	public String connect(String connectUrl) {
-		return httpClient.getResponse(connectUrl);
-	}
-
-	private String getBody(HttpURLConnection conn) throws IOException {
-		return httpClient.getBody(conn);
-	}
 }
