@@ -2,6 +2,8 @@ package org.rossjohnson.vera;
 
 
 import org.rossjohnson.http.HttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -12,6 +14,7 @@ public class ArcadeControllerImpl implements ArcadeController {
 	public static final String TOGGLE_BASE_URL =
 			"http://%s:3480/data_request?id=action&DeviceNum=%s&serviceId=urn:upnp-org:serviceId:SwitchPower1&action=SetTarget&newTargetValue=";
 
+    private static Logger log = LoggerFactory.getLogger(ArcadeControllerImpl.class);
 	private final HttpClient httpClient;
 	private String statusUrl;
 	private String baseToggleUrl;
@@ -29,7 +32,7 @@ public class ArcadeControllerImpl implements ArcadeController {
 
 	@Override
 	public void toggleArcadePower() {
-		log("Toggle arcade call success: " + (isArcadePowerOn() ? turnAcadeOff() : turnArcadeOn()));
+		log.debug("Toggle arcade call success: " + (isArcadePowerOn() ? turnAcadeOff() : turnArcadeOn()));
 	}
 
 	boolean turnArcadeOn() {
@@ -40,14 +43,10 @@ public class ArcadeControllerImpl implements ArcadeController {
 		return httpClient.getResponse(baseToggleUrl + "0") != null;
 	}
 
-	static void log(String message) {
-		System.out.println(String.format("[%s] %s", new Date(), message));
-	}
-
 	public static void main(String[] args) throws Exception {
 		ArcadeControllerImpl ac = new ArcadeControllerImpl("192.168.1.180", "101");
 		ac.toggleArcadePower();
-		log("Arcade on? " + ac.isArcadePowerOn());
+		log.info("Arcade on? " + ac.isArcadePowerOn());
 	}
 
 }

@@ -1,6 +1,8 @@
 package org.rossjohnson.xbox;
 
 import com.google.common.base.Splitter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,12 +16,15 @@ import java.util.Map;
 
 
 @RestController
-public class KodiNotificationController extends NotifcationController {
+public class KodiNotificationController  {
 
     private Map<String, String> urlMap;
 
     @Value("${kodi.instances}")
     private String urlMapFromConfig;
+
+    private static Logger log = LoggerFactory.getLogger(KodiNotificationController.class);
+
 
     @RequestMapping("/kodi-notify")
     public String index(@RequestParam(value = "title", defaultValue = "Title") String title,
@@ -54,7 +59,7 @@ public class KodiNotificationController extends NotifcationController {
             return conn.getResponseMessage();
         }
         catch (IOException e) {
-            log("Error sending Kodi notification to " + url + ":\n" + e.getMessage());
+            log.error("Error sending Kodi notification to " + url + ":\n", e);
             e.printStackTrace();
             return "Error sending Kodi notification to " + url + "<p/>" + e.getMessage();
         }

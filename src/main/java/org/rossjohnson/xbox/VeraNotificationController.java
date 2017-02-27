@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class VeraNotificationController extends NotifcationController {
+public class VeraNotificationController {
 
     @Value("${vera.ip}")
     private String veraIPAddress;

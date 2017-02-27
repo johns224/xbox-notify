@@ -7,6 +7,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-public class XboxNotifcationController extends NotifcationController {
+public class XboxNotifcationController {
 	public static final String MESSAGES_URL = "https://xboxapi.com/v2/messages";
+	private static Logger log = LoggerFactory.getLogger(XboxNotifcationController.class);
 
 	@Value("${xbox.user.xuid}")
 	private String xuid;
@@ -43,9 +46,9 @@ public class XboxNotifcationController extends NotifcationController {
 			StatusLine status = response.getStatusLine();
 			responseString = status.toString();
 			if (status.getStatusCode() != HttpStatus.SC_OK) {
-				log("Method failed: " + status);
+				log.error("Method failed: " + status);
 			} else {
-				log("Sent message '" + message + "' to " + xuid + "@" + MESSAGES_URL);
+				log.info("Sent message '" + message + "' to " + xuid + "@" + MESSAGES_URL);
 			}
 		} finally {
 			if (response != null)
