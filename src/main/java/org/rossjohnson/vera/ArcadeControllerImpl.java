@@ -1,15 +1,15 @@
 package org.rossjohnson.vera;
 
 
-import java.io.BufferedReader;
+import org.rossjohnson.http.HttpClient;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Date;
 
 public class ArcadeControllerImpl implements ArcadeController {
 
+	private final HttpClient httpClient = new HttpClient();
 	private String statusUrl;
 	private String baseToggleUrl;
 
@@ -30,7 +30,7 @@ public class ArcadeControllerImpl implements ArcadeController {
 
 	@Override
 	public boolean isArcadePowerOn() {
-		String response = connect(statusUrl);
+		String response = httpClient.getResponse(statusUrl);
 		return "1".equals(response);
 	}
 
@@ -40,11 +40,11 @@ public class ArcadeControllerImpl implements ArcadeController {
 	}
 
 	boolean turnArcadeOn() {
-		return connect(baseToggleUrl + "1") != null;
+		return httpClient.getResponse(baseToggleUrl + "1") != null;
 	}
 
 	boolean turnAcadeOff() {
-		return connect(baseToggleUrl + "0") != null;
+		return httpClient.getResponse(baseToggleUrl + "0") != null;
 	}
 
 	static void log(String message) {
@@ -57,42 +57,11 @@ public class ArcadeControllerImpl implements ArcadeController {
 		log("Arcade on? " + ac.isArcadePowerOn());
 	}
 
-	private String connect(String connectUrl) {
-		try {
-			log("Executing: " + connectUrl);
-			URL urlObj = new URL(connectUrl);
-			HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
-			conn.setRequestMethod("GET");
-			int statusCode = conn.getResponseCode();
-			if (statusCode != HttpURLConnection.HTTP_OK) {
-				log("Method failed: ");
-			}
-			else {
-				return getBody(conn);
-			}
-		}
-		catch (Exception e) {
-			log("Error hitting " + connectUrl);
-			e.printStackTrace();
-		}
-		return null;
+	public String connect(String connectUrl) {
+		return httpClient.getResponse(connectUrl);
 	}
 
 	private String getBody(HttpURLConnection conn) throws IOException {
-		BufferedReader in = null;
-		StringBuffer response = null;
-		try {
-			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String inputLine;
-			response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-		}
-		finally {
-			if (in != null) in.close();
-		}
-		return response.toString();
+		return httpClient.getBody(conn);
 	}
 }

@@ -17,18 +17,15 @@ public class VeraNotificationController extends NotifcationController {
     @Value("${arcade.deviceId}")
     private String arcadeDeviceId;
 
-    public VeraNotificationController() {
-        log("Constructing arcade controller with vera IP " + veraIPAddress);
-    }
-
     @RequestMapping("/vera-toggle")
     public String index(@RequestParam(value = "device", defaultValue = "arcade") String device) {
 
         if ("arcade".equals(device)) {
             ArcadeController arcadeController = new ArcadeControllerImpl(veraIPAddress, arcadeDeviceId);
             arcadeController.toggleArcadePower();
+            return "Arcade is now " + (arcadeController.isArcadePowerOn() ? "on" : "off");
         }
-        return "Success";
+        return "";
     }
 
 }
