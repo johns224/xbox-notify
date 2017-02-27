@@ -3,35 +3,28 @@ package org.rossjohnson.vera;
 
 import org.rossjohnson.http.HttpClient;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.Date;
 
 public class ArcadeControllerImpl implements ArcadeController {
 
-	private final HttpClient httpClient = new HttpClient();
+	public static final String STATUS_URL =
+			"http://%s:3480/data_request?id=variableget&DeviceNum=%s&serviceId=urn:upnp-org:serviceId:SwitchPower1&Variable=Status";
+	public static final String TOGGLE_BASE_URL =
+			"http://%s:3480/data_request?id=action&DeviceNum=%s&serviceId=urn:upnp-org:serviceId:SwitchPower1&action=SetTarget&newTargetValue=";
+
+	private final HttpClient httpClient;
 	private String statusUrl;
 	private String baseToggleUrl;
 
 	public ArcadeControllerImpl(String veraIPAddress, String arcadeDeviceId) {
-
-		statusUrl = String.format(
-				"http://%s:3480/data_request?id=variableget&DeviceNum=%s&serviceId=urn:upnp-org:serviceId:SwitchPower1&Variable=Status",
-				veraIPAddress,
-				arcadeDeviceId
-		);
-
-		baseToggleUrl = String.format(
-				"http://%s:3480/data_request?id=action&DeviceNum=%s&serviceId=urn:upnp-org:serviceId:SwitchPower1&action=SetTarget&newTargetValue=",
-				veraIPAddress,
-				arcadeDeviceId
-		);
+		httpClient = new HttpClient();
+		statusUrl = String.format(STATUS_URL, veraIPAddress, arcadeDeviceId);
+		baseToggleUrl = String.format(TOGGLE_BASE_URL, veraIPAddress, arcadeDeviceId);
 	}
 
 	@Override
 	public boolean isArcadePowerOn() {
-		String response = httpClient.getResponse(statusUrl);
-		return "1".equals(response);
+		return "1".equals(httpClient.getResponse(statusUrl));
 	}
 
 	@Override
@@ -40,7 +33,7 @@ public class ArcadeControllerImpl implements ArcadeController {
 	}
 
 	boolean turnArcadeOn() {
-		return httpClient.getResponse(baseToggleUrl + "1") != null;
+        return httpClient.getResponse(baseToggleUrl + "1") != null;
 	}
 
 	boolean turnAcadeOff() {
