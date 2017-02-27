@@ -12,9 +12,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-/**
- * Created by ross on 4/6/16.
- */
+
 @RestController
 public class KodiNotificationController extends NotifcationController {
 
