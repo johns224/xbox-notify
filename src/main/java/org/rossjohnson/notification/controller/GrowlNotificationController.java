@@ -1,4 +1,4 @@
-package org.rossjohnson.xbox;
+package org.rossjohnson.notification.controller;
 
 import com.google.code.jgntp.Gntp;
 import com.google.code.jgntp.GntpApplicationInfo;

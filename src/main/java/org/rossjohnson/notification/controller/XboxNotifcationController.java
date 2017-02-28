@@ -1,4 +1,4 @@
-package org.rossjohnson.xbox;
+package org.rossjohnson.notification.controller;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;

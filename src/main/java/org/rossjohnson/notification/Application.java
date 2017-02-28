@@ -1,4 +1,4 @@
-package org.rossjohnson.xbox;
+package org.rossjohnson.notification;
 
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.SpringApplication;

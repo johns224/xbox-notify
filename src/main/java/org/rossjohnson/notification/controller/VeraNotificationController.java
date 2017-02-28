@@ -1,7 +1,7 @@
-package org.rossjohnson.xbox;
+package org.rossjohnson.notification.controller;
 
-import org.rossjohnson.vera.ArcadeController;
-import org.rossjohnson.vera.ArcadeControllerImpl;
+import org.rossjohnson.notification.vera.ArcadeController;
+import org.rossjohnson.notification.vera.ArcadeControllerImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,4 +1,4 @@
-package org.rossjohnson.vera;
+package org.rossjohnson.notification.vera;
 
 /**
  * Created by ross on 2/26/2017.

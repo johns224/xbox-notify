@@ -1,4 +1,4 @@
-package org.rossjohnson.xbox;
+package org.rossjohnson.notification.controller;
 
 import com.google.common.base.Splitter;
 import org.slf4j.Logger;

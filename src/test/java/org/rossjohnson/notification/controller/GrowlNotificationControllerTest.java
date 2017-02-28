@@ -1,6 +1,4 @@
-package org.rossjohnson.xbox;
-
-import org.junit.Test;
+package org.rossjohnson.notification.controller;
 
 import java.util.concurrent.TimeUnit;
 
