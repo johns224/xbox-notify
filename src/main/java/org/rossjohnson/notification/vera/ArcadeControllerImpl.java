@@ -14,7 +14,8 @@ public class ArcadeControllerImpl implements ArcadeController {
 	public static final String TOGGLE_BASE_URL =
 			"http://%s:3480/data_request?id=action&DeviceNum=%s" +
 					"&serviceId=urn:upnp-org:serviceId:SwitchPower1" +
-					"&action=SetTarget&newTargetValue=";
+					"&action=SetTarget" +
+                    "&newTargetValue=";
 
     private static Logger log = LoggerFactory.getLogger(ArcadeControllerImpl.class);
 	private final SimpleHttpClient httpClient;

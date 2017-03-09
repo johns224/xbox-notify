@@ -23,13 +23,33 @@ public class VeraNotificationController {
     public String index(@RequestParam(value = "device", defaultValue = "arcade") String device) {
 
         if ("arcade".equals(device)) {
-            if (arcadeController == null) {
-                arcadeController = new ArcadeControllerImpl(veraIPAddress, arcadeDeviceId);
-            }
+            init();
             arcadeController.toggleArcadePower();
             return "Arcade is now " + (arcadeController.isArcadePowerOn() ? "on" : "off");
         }
         return "";
+    }
+
+    @RequestMapping("/vera-query")
+    public String query(@RequestParam(value = "device", defaultValue = "arcade") String device) {
+
+        if ("arcade".equals(device)) {
+            init();
+            boolean arcadePowerOn = arcadeController.isArcadePowerOn();
+            return String.format(
+                    "%s is %s<p/><form action=\"/vera-toggle\"><button type=\"submit\">Turn %s</button></form>",
+                    device,
+                    arcadePowerOn ? "on" : "off",
+                    arcadePowerOn ? "off" : "on"
+            );
+        }
+        return "";
+    }
+
+    public void init() {
+        if (arcadeController == null) {
+            arcadeController = new ArcadeControllerImpl(veraIPAddress, arcadeDeviceId);
+        }
     }
 
 }
