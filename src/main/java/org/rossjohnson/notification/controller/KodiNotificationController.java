@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @RestController
-public class KodiNotificationController  {
+public class KodiNotificationController {
 
     private Map<String, String> urlMap;
 
@@ -32,15 +32,16 @@ public class KodiNotificationController  {
                         @RequestParam(value = "location", defaultValue = "theater") String location)
             throws IOException, InterruptedException {
 
-        if (urlMap == null) {
-            init();
-        }
+
+        init();
         String baseUrl = urlMap.get(location);
         return sendNotification(title, message, baseUrl);
     }
 
     private void init() {
-        urlMap = Splitter.on(",").withKeyValueSeparator("=").split(urlMapFromConfig);
+        if (urlMap == null) {
+            urlMap = Splitter.on(",").withKeyValueSeparator("=").split(urlMapFromConfig);
+        }
     }
 
     private String sendNotification(String title, String message, String url) {
@@ -54,11 +55,10 @@ public class KodiNotificationController  {
             conn.setRequestMethod("GET");
             int statusCode = conn.getResponseCode();
             if (statusCode != HttpURLConnection.HTTP_OK) {
-				return "Attempt to send message to " + url + " failed with response code " + statusCode + ":\n" + conn.getResponseMessage();
-			}
+                return "Attempt to send message to " + url + " failed with response code " + statusCode + ":\n" + conn.getResponseMessage();
+            }
             return conn.getResponseMessage();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             log.error("Error sending Kodi notification to " + url + ":\n", e);
             e.printStackTrace();
             return "Error sending Kodi notification to " + url + "<p/>" + e.getMessage();

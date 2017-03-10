@@ -43,8 +43,7 @@ public class VeraNotificationController {
                 "%s is %s<p/><form action=\"/vera-toggle\"><button type=\"submit\">Turn %s</button></form>",
                 device,
                 powerOn ? "on" : "off",
-                powerOn ? "off" : "on"
-        );
+                powerOn ? "off" : "on");
     }
 
     public void init() {
