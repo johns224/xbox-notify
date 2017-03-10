@@ -22,10 +22,10 @@ public class VeraController {
 	private String statusUrl;
 	private String toggleUrl;
 
-	public VeraController(String veraIPAddress, String arcadeDeviceId) {
+	public VeraController(String veraIPAddress, String deviceId) {
 		httpClient = new SimpleHttpClient();
-		statusUrl = String.format(STATUS_BASE_URL, veraIPAddress, arcadeDeviceId);
-		toggleUrl = String.format(TOGGLE_BASE_URL, veraIPAddress, arcadeDeviceId);
+		statusUrl = String.format(STATUS_BASE_URL, veraIPAddress, deviceId);
+		toggleUrl = String.format(TOGGLE_BASE_URL, veraIPAddress, deviceId);
 	}
 
 	public boolean isPowerOn() {
@@ -33,14 +33,14 @@ public class VeraController {
 	}
 
 	public void togglePower() {
-		log.debug("Toggle power call success: " + (isPowerOn() ? turnAcadeOff() : turnArcadeOn()));
+		log.debug("Toggle power call success: " + (isPowerOn() ? turnPowerOff() : turnPowerOn()));
 	}
 
-	boolean turnArcadeOn() {
+	boolean turnPowerOn() {
         return httpClient.getResponse(toggleUrl + "1") != null;
 	}
 
-	boolean turnAcadeOff() {
+	boolean turnPowerOff() {
 		return httpClient.getResponse(toggleUrl + "0") != null;
 	}
 

@@ -31,19 +31,19 @@ public class VeraNotificationController {
         init();
         VeraController controller = getController(deviceNameToIdMap.get(device));
         controller.togglePower();
-        return "Arcade is now " + (controller.isPowerOn() ? "on" : "off");
+        return device + " is now " + (controller.isPowerOn() ? "on" : "off");
     }
 
     @RequestMapping("/vera-query")
     public String query(@RequestParam(value = "device", defaultValue = "arcade") String device) {
 
         init();
-        boolean arcadePowerOn = getController(deviceNameToIdMap.get(device)).isPowerOn();
+        boolean powerOn = getController(deviceNameToIdMap.get(device)).isPowerOn();
         return String.format(
                 "%s is %s<p/><form action=\"/vera-toggle\"><button type=\"submit\">Turn %s</button></form>",
                 device,
-                arcadePowerOn ? "on" : "off",
-                arcadePowerOn ? "off" : "on"
+                powerOn ? "on" : "off",
+                powerOn ? "off" : "on"
         );
     }
 
