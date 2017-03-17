@@ -3,6 +3,7 @@ package org.rossjohnson.notification.controller;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import org.rossjohnson.notification.vera.VeraController;
+import org.rossjohnson.notification.vera.VeraControllerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,22 +24,33 @@ public class VeraNotificationController {
     private String deviceMapFromConfig;
 
     private Map<String, String> deviceNameToIdMap;
+
+    private VeraController veraController;
+
     private static Logger log = LoggerFactory.getLogger(VeraNotificationController.class);
 
     @RequestMapping("/vera-toggle")
     public String index(@RequestParam(value = "device", defaultValue = "arcade") String device) {
 
         init();
-        VeraController controller = getController(deviceNameToIdMap.get(device));
-        controller.togglePower();
-        return device + " is now " + (controller.isPowerOn() ? "on" : "off");
+        String deviceId = deviceNameToIdMap.get(device);
+        if (deviceId == null) {
+            return "No such device: " + device;
+        }
+        VeraController controller = getController();
+        controller.togglePower(deviceId);
+        return device + " is now " + (controller.isPowerOn(deviceId) ? "on" : "off");
     }
 
     @RequestMapping("/vera-query")
     public String query(@RequestParam(value = "device", defaultValue = "arcade") String device) {
 
         init();
-        boolean powerOn = getController(deviceNameToIdMap.get(device)).isPowerOn();
+        String deviceId = deviceNameToIdMap.get(device);
+        if (deviceId == null) {
+            return "No such device: " + device;
+        }
+        boolean powerOn = getController().isPowerOn(deviceId);
         return String.format(
                 "%s is %s<p/><form action=\"/vera-toggle\"><button type=\"submit\">Turn %s</button></form>",
                 device,
@@ -54,8 +66,18 @@ public class VeraNotificationController {
         }
     }
 
-    public VeraController getController(String deviceId) {
-        return new VeraController(veraIPAddress, deviceId);
+    public VeraController getController() {
+        if (veraController == null) {
+            veraController = new VeraControllerImpl(veraIPAddress);
+        }
+        return veraController;
     }
 
+    public void setVeraController(VeraController veraController) {
+        this.veraController = veraController;
+    }
+
+    public void setDeviceMapFromConfig(String deviceMapFromConfig) {
+        this.deviceMapFromConfig = deviceMapFromConfig;
+    }
 }
