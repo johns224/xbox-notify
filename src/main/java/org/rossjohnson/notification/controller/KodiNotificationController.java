@@ -23,8 +23,6 @@ public class KodiNotificationController {
     @Value("${kodi.instances}")
     private String urlMapFromConfig;
 
-    private static Logger log = LoggerFactory.getLogger(KodiNotificationController.class);
-
     private static final String BASE_NOTIFICATION_URL = "%s/jsonrpc?request=";
     private static final String BASE_QUERY_PARAMS = "{ \"jsonrpc\": \"2.0\", \"method\": \"GUI.ShowNotification\", " +
                     "\"params\": { \"title\": \"%s\", \"message\": \"%s\" }, \"id\": 1 }";
@@ -36,8 +34,7 @@ public class KodiNotificationController {
             throws IOException, InterruptedException {
 
         init();
-        String baseUrl = urlMap.get(location);
-        return sendNotification(title, message, baseUrl);
+        return sendNotification(title, message, urlMap.get(location));
     }
 
     private void init() {
