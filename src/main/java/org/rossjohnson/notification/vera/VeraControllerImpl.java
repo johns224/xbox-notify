@@ -4,7 +4,11 @@ package org.rossjohnson.notification.vera;
 import org.rossjohnson.notification.http.SimpleHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Service
 public class VeraControllerImpl implements VeraController {
 
 	public static final String STATUS_BASE_URL =
@@ -20,14 +24,13 @@ public class VeraControllerImpl implements VeraController {
 
     private static Logger log = LoggerFactory.getLogger(VeraControllerImpl.class);
 	private final SimpleHttpClient httpClient;
-	private String statusUrl;
-	private String toggleUrl;
+
+    @Value("${vera.ip}")
+    private String veraIPAddress;
 
 
-	public VeraControllerImpl(String veraIPAddress) {
+	public VeraControllerImpl() {
 		httpClient = new SimpleHttpClient();
-		statusUrl = String.format(STATUS_BASE_URL, veraIPAddress);
-		toggleUrl = String.format(TOGGLE_BASE_URL, veraIPAddress);
 	}
 
     @Override
@@ -38,19 +41,19 @@ public class VeraControllerImpl implements VeraController {
 
 	@Override
 	public boolean isPowerOn(String deviceId) {
-        return "1".equals(httpClient.getResponse(statusUrl + "&DeviceNum=" + deviceId));
+        return "1".equals(httpClient.getResponse(String.format(STATUS_BASE_URL, veraIPAddress) + "&DeviceNum=" + deviceId));
 	}
 
 	boolean turnPowerOn(String deviceId) {
-        return httpClient.getResponse(toggleUrl + "1&DeviceNum=" + deviceId) != null;
+        return httpClient.getResponse(String.format(TOGGLE_BASE_URL, veraIPAddress) + "1&DeviceNum=" + deviceId) != null;
 	}
 
 	boolean turnPowerOff(String deviceId) {
-        return httpClient.getResponse(toggleUrl + "0&DeviceNum=" + deviceId) != null;
+        return httpClient.getResponse(String.format(TOGGLE_BASE_URL, veraIPAddress) + "0&DeviceNum=" + deviceId) != null;
 	}
 
 	public static void main(String[] args) throws Exception {
-		VeraController ac = new VeraControllerImpl("192.168.1.180");
+		VeraController ac = new VeraControllerImpl();
 		ac.togglePower("101");
 		log.info("Power on? " + ac.isPowerOn("101"));
 	}

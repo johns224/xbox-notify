@@ -6,6 +6,7 @@ import org.rossjohnson.notification.vera.VeraController;
 import org.rossjohnson.notification.vera.VeraControllerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,8 @@ public class VeraNotificationController {
 
     private Map<String, String> deviceNameToIdMap;
 
-    private VeraController veraController;
+    @Autowired
+    private VeraController controller;
 
     private static Logger log = LoggerFactory.getLogger(VeraNotificationController.class);
 
@@ -37,7 +39,6 @@ public class VeraNotificationController {
         if (deviceId == null) {
             return "No such device: " + device;
         }
-        VeraController controller = getController();
         controller.togglePower(deviceId);
         return device + " is now " + (controller.isPowerOn(deviceId) ? "on" : "off");
     }
@@ -50,7 +51,7 @@ public class VeraNotificationController {
         if (deviceId == null) {
             return "No such device: " + device;
         }
-        boolean powerOn = getController().isPowerOn(deviceId);
+        boolean powerOn = controller.isPowerOn(deviceId);
         return String.format(
                 "%s is %s<p/><form action=\"/vera-toggle\"><button type=\"submit\">Turn %s</button></form>",
                 device,
@@ -66,15 +67,8 @@ public class VeraNotificationController {
         }
     }
 
-    public VeraController getController() {
-        if (veraController == null) {
-            veraController = new VeraControllerImpl(veraIPAddress);
-        }
-        return veraController;
-    }
-
     public void setVeraController(VeraController veraController) {
-        this.veraController = veraController;
+        controller = veraController;
     }
 
     public void setDeviceMapFromConfig(String deviceMapFromConfig) {
